@@ -10,14 +10,9 @@ using System.Text;
 
 namespace FileManager
 {
-	public enum FileManagerType
-	{
-		Local = 1
-	}
-
 	public class FileManagerFactory<TConfiguration>
 	{
-		public static IFileManager<TFile> GetManager<TFile>(FileManagerType managerType, TConfiguration configuration, ILogger logger = null)
+		public static IFileManager<TFile> GetManager<TFile>(TConfiguration configuration, ILogger logger = null)
 			where TFile : FileBase, new()
 		{
 			if (typeof(TFile) == typeof(FileLocal))
@@ -25,9 +20,9 @@ namespace FileManager
 				var conf = configuration as ConfigurationLocal;
 				if (conf == null)
 				{
-					throw new Exception($"Not correct configuration for {managerType}, expected {nameof(ConfigurationLocal)}");
+					throw new Exception($"Not correct configuration for {nameof(TFile)}, expected {nameof(ConfigurationLocal)}");
 				}
-				var fileManager = new FileManager<TFile, TConfiguration>(new LocalProvider<TFile>(), configuration, logger);
+				var fileManager = new FileManager<TFile, ConfigurationLocal>(new LocalProvider<TFile>(), conf, logger);
 				return fileManager;
 			}
 			else
