@@ -92,7 +92,7 @@ namespace FileManager.Providers
 					CheckFileExist(file.Path);
 					File.Delete(file.Path);
 				}
-				catch (FileNotFoundException ex)
+				catch (FileNotFoundException)
 				{
 					continue;
 				}
